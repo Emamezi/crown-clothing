@@ -4,11 +4,12 @@ const BUTTON_TYPE_CLASSES = {
   google: "google-sign-in",
   inverted: "inverted",
 };
-function Button({ children, buttonType }) {
+function Button({ children, buttonType, onClick }) {
   return (
     <div>
       <button
         className={`button-container  ${BUTTON_TYPE_CLASSES[buttonType]}`}
+        onClick={onClick}
       >
         {children}
       </button>

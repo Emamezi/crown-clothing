@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   createAuthFromEmailandPassword,
-  auth,
   createUserDocumentFromAuth,
 } from "../../utils/firebase/firebase";
 import FormInput from "../form-input/form-input.component";
@@ -14,6 +13,7 @@ const defaultFormFields = {
   password: "",
   confirmPassword: "",
 };
+
 function SignUpForm() {
   const [formField, setFormField] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formField;
@@ -28,11 +28,7 @@ function SignUpForm() {
     if (password !== confirmPassword) return;
     try {
       //create auth user from email and password
-      const { user } = await createAuthFromEmailandPassword(
-        auth,
-        email,
-        password
-      );
+      const { user } = await createAuthFromEmailandPassword(email, password);
       //create userRefDocs on the firestore
       await createUserDocumentFromAuth(user, {
         displayName,
@@ -83,7 +79,7 @@ function SignUpForm() {
           }}
         />
         <FormInput
-          label="confirmPassword"
+          label="Confirm Password"
           inputOptions={{
             type: "password",
             onChange: handleChange,
