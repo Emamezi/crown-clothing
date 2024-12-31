@@ -5,6 +5,8 @@ import {
   signInWithPopup,
   signInWithRedirect,
   signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth/web-extension";
 import {
@@ -46,14 +48,17 @@ export function signInWithGoogleRedirect() {
 }
 
 export async function createUserDocumentFromAuth(userAuth, additionalInfo) {
+  // userAuth = authenticated user object
   if (!userAuth) return;
+  //create relative path to the new user db storage with unique uid from userAuth Obj
   const userDocRef = doc(db, "users", userAuth.uid);
+
   //checking if there is an instance of "users" document that exists in the db
   const userSnapShot = await getDoc(userDocRef);
 
   //if no user data exixts
   if (!userSnapShot.exists()) {
-    //get data props from the userAuth object returned
+    //get data props to be stored in db from the userAuth object
     const { displayName, email } = userAuth;
     const createdAt = new Date();
     try {
@@ -81,4 +86,12 @@ export async function createAuthFromEmailandPassword(email, password) {
 export async function signInAuthWithEmailAndPassword(email, password) {
   if (!email || !password) return;
   return await signInWithEmailAndPassword(auth, email, password);
+}
+
+export async function signOutAuthUser() {
+  return await signOut(auth);
+}
+
+export function onAuthStateChangeListner(callback) {
+  return onAuthStateChanged(auth, callback);
 }

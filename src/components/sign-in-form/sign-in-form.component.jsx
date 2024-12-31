@@ -1,19 +1,21 @@
-import FormInput from "../form-input/form-input.component";
+import { useState } from "react";
 import {
-  auth,
   signInWithGooglePopUp,
   createUserDocumentFromAuth,
   signInAuthWithEmailAndPassword,
 } from "../../utils/firebase/firebase";
+import UserProvider, { userContext } from "../../contexts/user.context";
 import Button from "../button/button.component";
-import { useState } from "react";
 import "./sign-in-form.styles.scss";
+import FormInput from "../form-input/form-input.component";
+import { useNavigate } from "react-router-dom";
 
 const defaultFields = {
   email: "",
   password: "",
 };
 function SignInForm() {
+  // const navigate = useNavigate();
   const [formFields, setFormField] = useState(defaultFields);
   const { email, password } = formFields;
 
@@ -23,22 +25,24 @@ function SignInForm() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const user = await signInAuthWithEmailAndPassword(auth, email, password);
-      console.log(user);
+      await signInAuthWithEmailAndPassword(email, password);
+
       resetFormFields();
+      // navigate("/");
     } catch (error) {
       if (error.code === "auth/wrong-password")
         alert("Wrong sign in credentials");
-      console.log("could not sign in");
+      resetFormFields();
+      console.log(error);
     }
   }
   function handleChange(e) {
     const { name, value } = e.target;
     setFormField({ ...formFields, [name]: value });
   }
+
   async function signInWithGoogle() {
-    const { user } = await signInWithGooglePopUp();
-    await createUserDocumentFromAuth(user);
+    await signInWithGooglePopUp();
   }
 
   return (
