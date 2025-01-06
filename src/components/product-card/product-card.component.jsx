@@ -8,7 +8,6 @@ function ProductCard({ product }) {
   function addCartItem() {
     addItemToCart(product);
   }
-  console.log(product);
   const { imageUrl, name, price } = product;
   return (
     <div className="product-card-container">
