@@ -14,7 +14,10 @@ import {
   doc,
   getDoc,
   setDoc,
-  snapshotEqual,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
 } from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -39,6 +42,42 @@ export const auth = getAuth();
 provider.setCustomParameters({
   prompt: "select_account",
 });
+//setting data automatically to the firesotre instead of adding it maunally
+// collections-->document-->data
+export async function addCollectionAndDocuments(collectionKey, objectsToAdd) {
+  const collectionRef = collection(db, collectionKey); // reference to the collection on the firestore db instance
+  const batch = writeBatch(db);
+
+  //loop over the object to add and perform a write to the db path specified for each object instance using the title as unique key
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log("done");
+}
+
+export async function getCategoriesAndDocument() {
+  //creatign a reference to the categories collection in the db
+  const collectionRef = collection(db, "categories");
+  // query against the collection
+  const q = query(collectionRef);
+  //retrieving results of the query and returns result as a querysnapshot
+  const querySnapShot = await getDocs(q);
+  console.log(querySnapShot.docs);
+  //the snapshot results can be accesed throught the docs property see firebase DOCS for more info
+  const categoriesMap = querySnapShot.docs.reduce((acc, docSnapShot) => {
+    const { title, items } = docSnapShot.data();
+
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+
+  // const categoriesMap = querySnapShot.docs.reduce((acc, i) => {}, {});
+
+  return categoriesMap;
+}
 
 export function signInWithGooglePopUp() {
   return signInWithPopup(auth, provider);

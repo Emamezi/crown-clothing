@@ -47,7 +47,6 @@ function removeCartItem(cartItems, cartItemToRemove) {
 
 function clearCartItem(cartItems, cartItemToClear) {
   //using filter array method to return back a nrew array that passes the arguementn criteria
-
   return cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
 }
 
