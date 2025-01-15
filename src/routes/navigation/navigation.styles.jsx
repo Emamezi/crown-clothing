@@ -21,6 +21,7 @@ export const NavLinks = styled.div`
   justify-content: flex-end;
   height: 100%;
   width: 50%;
+  gap: 20px;
 `;
 
 export const NavLink = styled(Link)`

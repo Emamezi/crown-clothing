@@ -13,6 +13,7 @@ export const Body = styled.div`
   padding: 0 25px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   align-items: center;
   justify-content: center;
   border: 1px solid black;

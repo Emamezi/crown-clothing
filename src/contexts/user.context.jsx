@@ -26,7 +26,6 @@ function UserProvider({ children }) {
   }, []);
   // const value = { currentUser, setCurrentUser };
   // const displayName = currentUser.displayName ?? "";
-  console.log(currentUser);
   return (
     <userContext.Provider value={{ currentUser, setCurrentUser, name }}>
       {children}
