@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   signInWithGooglePopUp,
-  createUserDocumentFromAuth,
   signInAuthWithEmailAndPassword,
 } from "../../utils/firebase/firebase";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";

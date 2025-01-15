@@ -1,4 +1,4 @@
-import { Outlet, Link, NavLink } from "react-router-dom";
+import { Outlet, NavLink } from "react-router-dom";
 import { ReactComponent as CrownSvg } from "../../assets/crown.svg";
 import { signOutAuthUser } from "../../utils/firebase/firebase";
 import { useContext } from "react";
@@ -13,7 +13,7 @@ import {
   NavLinks,
 } from "./navigation.styles.jsx";
 function Navigation() {
-  const { currentUser, setCurrentUser, name } = useContext(userContext);
+  const { currentUser } = useContext(userContext);
   const { isCartOpen } = useContext(CartContext);
 
   // async function signOutHandler() {
