@@ -78,6 +78,18 @@ export async function getCategoriesAndDocument() {
   return categoriesMap;
 }
 
+export async function getUserInfo(uid) {
+  const userDocRef = collection(db, `users`);
+
+  const userSnapShot = await getDocs(userDocRef);
+  const { displayName } = userSnapShot.docs
+    .filter((doc) => doc.id === uid)
+    .at(0)
+    .data();
+
+  return displayName;
+}
+
 export function signInWithGooglePopUp() {
   return signInWithPopup(auth, provider);
 }
