@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer } from "react";
 
 export const CartContext = createContext({
   isCartOpen: false,
@@ -50,40 +50,90 @@ function clearCartItem(cartItems, cartItemToClear) {
   return cartItems.filter((cartItem) => cartItem.id !== cartItemToClear.id);
 }
 
-function CartProvider({ children }) {
-  const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState([]);
+const CART_DEFAULT_STATE = {
+  isCartOpen: false,
+  cartItems: [],
+  cartCount: 0,
+  cartTotal: 0,
+};
 
-  //using derived state instead of useEffect call back to reduce the amput of rerenders for performance optimization
-  const cartCount = cartItems.reduce(
-    (cartCount, cartItem) => cartItem.quantity + cartCount,
-    0
-  );
-  const cartPriceTotal = cartItems.reduce(
-    (total, cartItem) => total + cartItem.quantity * cartItem.price,
-    0
-  );
+const CART_ACTION_TYPES = {
+  SET_CART_ITEMS: "SET_CART_ITEMS",
+  TOGGLE_CART_OPEN: "TOGGLE_CART_OPEN",
+};
+
+function cartReducer(state, action) {
+  const { payload, type } = action;
+
+  switch (type) {
+    case CART_ACTION_TYPES.TOGGLE_CART_OPEN:
+      return { ...state, isCartOpen: payload };
+    case CART_ACTION_TYPES.SET_CART_ITEMS:
+      return {
+        ...state,
+        ...payload,
+      };
+    default:
+      throw new Error(`unhandled type of ${type}`);
+  }
+}
+
+function CartProvider({ children }) {
+  const [{ cartItems, isCartOpen, cartCount, cartTotal }, dispatch] =
+    useReducer(cartReducer, CART_DEFAULT_STATE);
+
+  function updateCartItemsReducer(newCartItems) {
+    //generate new total
+    const newCartCount = newCartItems.reduce(
+      (cartTotal, cartItem) => cartItem.quantity + cartTotal,
+      0
+    );
+
+    //generate new count
+    const newTotal = newCartItems.reduce(
+      (cartTotal, cartItem) => cartTotal + cartItem.price * cartItem.quantity,
+      0
+    );
+
+    dispatch({
+      type: CART_ACTION_TYPES.SET_CART_ITEMS,
+      payload: {
+        cartItems: newCartItems,
+        cartTotal: newTotal,
+        cartCount: newCartCount,
+      },
+    });
+  }
+
   //triggers whenever users clicks on add to cart
   function addItemToCart(productToAdd) {
-    setCartItems(addCartItem(cartItems, productToAdd));
+    const newCartItems = addCartItem(cartItems, productToAdd);
+    updateCartItemsReducer(newCartItems);
   }
   function removeItemToCart(cartItemToRemove) {
-    setCartItems(removeCartItem(cartItems, cartItemToRemove));
+    const newCartItems = removeCartItem(cartItems, cartItemToRemove);
+    updateCartItemsReducer(newCartItems);
   }
   function clearItemFromCart(cartItemToClear) {
-    setCartItems(clearCartItem(cartItems, cartItemToClear));
+    const newCartItems = clearCartItem(cartItems, cartItemToClear);
+    updateCartItemsReducer(newCartItems);
+  }
+  function setIsCartOpen(bool) {
+    return dispatch({
+      type: CART_ACTION_TYPES.TOGGLE_CART_OPEN,
+      payload: bool,
+    });
   }
 
   const value = {
-    isCartOpen,
-    setIsCartOpen,
     cartItems,
-    setCartItems,
-    addItemToCart,
-    removeItemToCart,
-    clearItemFromCart,
     cartCount,
-    cartPriceTotal,
+    setIsCartOpen,
+    cartTotal,
+    isCartOpen,
+    clearItemFromCart,
+    removeItemToCart,
+    addItemToCart,
   };
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

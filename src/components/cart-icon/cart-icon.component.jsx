@@ -9,11 +9,11 @@ import {
 // import CartIcon from "./cart-icon.component";
 
 function CartIcon() {
-  const { setIsCartOpen } = useContext(CartContext);
+  const { setIsCartOpen, isCartOpen } = useContext(CartContext);
   const { cartCount } = useContext(CartContext);
 
   function toggleCart() {
-    setIsCartOpen((isCartOpen) => !isCartOpen);
+    setIsCartOpen(!isCartOpen);
   }
 
   return (
