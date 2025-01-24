@@ -7,9 +7,9 @@ export const SignInFormContainer = styled.div`
   h2 {
     margin: 10px 0;
   }
-  .buttons-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
+`;
+export const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 `;

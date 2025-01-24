@@ -6,7 +6,7 @@ import {
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import { useNavigate } from "react-router-dom";
-import { SignInFormContainer } from "./sign-in-form.styles";
+import { ButtonsContainer, SignInFormContainer } from "./sign-in-form.styles";
 
 const defaultFields = {
   email: "",
@@ -66,7 +66,7 @@ function SignInForm() {
             onChange: handleChange,
           }}
         />
-        <div className="buttons-container">
+        <ButtonsContainer>
           <Button type="submit">Sign In</Button>
           <Button
             type="button"
@@ -75,7 +75,7 @@ function SignInForm() {
           >
             Google sign in
           </Button>
-        </div>
+        </ButtonsContainer>
       </form>
     </SignInFormContainer>
   );

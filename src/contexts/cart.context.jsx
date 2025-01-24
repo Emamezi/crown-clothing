@@ -1,4 +1,5 @@
 import { createContext, useReducer } from "react";
+import { createAction } from "../utils/reducer/reducer.utils";
 
 export const CartContext = createContext({
   isCartOpen: false,
@@ -95,14 +96,13 @@ function CartProvider({ children }) {
       0
     );
 
-    dispatch({
-      type: CART_ACTION_TYPES.SET_CART_ITEMS,
-      payload: {
+    dispatch(
+      createAction(CART_ACTION_TYPES.SET_CART_ITEMS, {
         cartItems: newCartItems,
         cartTotal: newTotal,
         cartCount: newCartCount,
-      },
-    });
+      })
+    );
   }
 
   //triggers whenever users clicks on add to cart
@@ -119,10 +119,7 @@ function CartProvider({ children }) {
     updateCartItemsReducer(newCartItems);
   }
   function setIsCartOpen(bool) {
-    return dispatch({
-      type: CART_ACTION_TYPES.TOGGLE_CART_OPEN,
-      payload: bool,
-    });
+    return dispatch(createAction(CART_ACTION_TYPES.TOGGLE_CART_OPEN, bool));
   }
 
   const value = {

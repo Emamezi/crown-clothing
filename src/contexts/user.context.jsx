@@ -3,8 +3,8 @@ import {
   onAuthStateChangeListner,
   createUserDocumentFromAuth,
   getUserInfo,
-  auth,
 } from "../utils/firebase/firebase";
+import { createAction } from "../utils/reducer/reducer.utils";
 
 export const userContext = createContext({
   currentUser: null,
@@ -15,10 +15,10 @@ export const userContext = createContext({
 const INITIAL_USER_STATE = {
   currentUser: null,
 };
-//creating default action types using object to keep track easily in application and avoid errors
 export const USER_ACTION_TYPES = {
   SET_CURRENT_USER: "SET_CURRENT_USER",
 };
+
 function userReducer(state, action) {
   switch (action.type) {
     case USER_ACTION_TYPES.SET_CURRENT_USER:
@@ -39,10 +39,7 @@ function UserProvider({ children }) {
   const { currentUser } = state;
 
   function setCurrentUser(user) {
-    dispatch({
-      type: USER_ACTION_TYPES.SET_CURRENT_USER,
-      payload: user,
-    });
+    dispatch(createAction(USER_ACTION_TYPES.SET_CURRENT_USER, user));
   }
   // const [currentUser, setCurrentUser] = useState(null);
   const [name, SetName] = useState("");
@@ -57,25 +54,10 @@ function UserProvider({ children }) {
       }
 
       setCurrentUser(user);
-      // SetName(() => getInfo);
     });
     return unsubscribe;
   }, []);
 
-  // useEffect(() => {
-  //   async function getInfo() {
-  //     const detail = await getUserInfo(auth.currentUser.uid);
-  //     console.log(detail);
-  //   }
-  //   const { displayName } = getInfo();
-  //   SetName(displayName);
-  // }, []);
-  // async function getInfo() {
-  //   const user = await getUserInfo();
-  //   console.log(user);
-  // }
-  // const value = { currentUser, setCurrentUser };
-  // const displayName = currentUser.displayName ?? "";
   return (
     <userContext.Provider value={{ currentUser, setCurrentUser, name }}>
       {children}
