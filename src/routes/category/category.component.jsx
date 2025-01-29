@@ -5,15 +5,17 @@ import ProductCard from "../../components/product-card/product-card.component";
 import "./category.styles.jsx";
 import { CategoryContainer, CategoryTitle } from "./category.styles.jsx";
 import { useSelector } from "react-redux";
-import { selectCategoriesMap } from "../../store/categories/categories.selector.js";
+import { selectCategories } from "../../store/categories/categories.selector.js";
 
 function Category() {
   const { categoryTitle } = useParams();
-  const categories = useSelector(selectCategoriesMap);
+  console.log("rendering/rerending component");
+  const categories = useSelector(selectCategories);
   const [products, setProducts] = useState([]);
   //using a useffect to re-render anytime the dynamic category route changes or the categoriesMap changes
   //alternative would be--> const products=categories[categoryTiitle] but it would instantiate everytinme the component renenders leading to performace issues
   useEffect(() => {
+    console.log("effect fired calling setProducts");
     setProducts(categories[categoryTitle]);
   }, [categories, categoryTitle]);
 

@@ -66,16 +66,7 @@ export async function getCategoriesAndDocument() {
   //retrieving results of the query and returns result as a querysnapshot
   const querySnapShot = await getDocs(q);
   //the snapshot results can be accesed throught the docs property see firebase DOCS for more info
-  const categoriesMap = querySnapShot.docs.reduce((acc, docSnapShot) => {
-    const { title, items } = docSnapShot.data();
-
-    acc[title.toLowerCase()] = items;
-    return acc;
-  }, {});
-
-  // const categoriesMap = querySnapShot.docs.reduce((acc, i) => {}, {});
-
-  return categoriesMap;
+  return querySnapShot.docs.map((docSnapshot) => docSnapshot.data());
 }
 
 export async function getUserInfo(uid) {

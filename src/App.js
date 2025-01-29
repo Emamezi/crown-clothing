@@ -16,17 +16,15 @@ import CheckOut from "./routes/checkout/check-out.component";
 
 function App() {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const unsubscribe = onAuthStateChangeListner(async (user) => {
       if (user) {
         createUserDocumentFromAuth(user);
-        console.log(user);
         const displayName = await getUserInfo(user.uid);
         dispatch(setDisplayName(displayName));
-        // SetName(displayName);
       }
       dispatch(setCurrentUser(user));
-      // SetName(() => getInfo);
     });
     return unsubscribe;
   }, [dispatch]);
