@@ -18,9 +18,7 @@ root.render(
           v7_startTransition: true,
         }}
       >
-        <CartProvider>
-          <App />
-        </CartProvider>
+        <App />
       </BrowserRouter>
     </Provider>
   </React.StrictMode>
