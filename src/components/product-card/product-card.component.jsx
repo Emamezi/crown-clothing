@@ -9,7 +9,6 @@ function ProductCard({ product }) {
   const { imageUrl, name, price } = product;
   const cartItems = useSelector(selectCartItems);
   const dispatch = useDispatch();
-  console.log(cartItems);
 
   function addCartItem() {
     dispatch(addItemToCart(cartItems, product));

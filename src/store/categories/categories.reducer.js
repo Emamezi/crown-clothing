@@ -2,14 +2,22 @@ import { CATEGORIES_MAP_TYPES } from "./categories.types";
 
 export const CATEGORIES_INITIAL_STATE = {
   categories: [],
+  isLoading: false,
+  error: null,
 };
 
-export function categoriesReducer(state = CATEGORIES_INITIAL_STATE, action) {
+export function categoriesReducer(
+  state = CATEGORIES_INITIAL_STATE,
+  action = {}
+) {
   const { type, payload } = action;
   switch (type) {
-    case CATEGORIES_MAP_TYPES.SET_CATEGORIES:
-      return { ...state, categories: payload };
-
+    case CATEGORIES_MAP_TYPES.FETCH_CATEGORIES_START:
+      return { ...state, isLoading: true };
+    case CATEGORIES_MAP_TYPES.FETCH_CATEGORIES_SUCCESS:
+      return { ...state, categories: payload, isLoading: false };
+    case CATEGORIES_MAP_TYPES.FETCH_CATEGORIES_FAILED:
+      return { ...state, error: payload, isLoading: false };
     default:
       return state;
   }
