@@ -4,18 +4,22 @@ import { USER_ACTION_TYPES } from "./user.types";
 
 const INITIAL_USER_STATE = {
   currentUser: null,
-  displayName: null,
+  isloading: false,
+  error: null,
 };
 
 export function userReducer(state = INITIAL_USER_STATE, action) {
-  switch (action.type) {
-    case USER_ACTION_TYPES.SET_CURRENT_USER:
+  const { type, payload } = action;
+  switch (type) {
+    case USER_ACTION_TYPES.USER_SIGNIN_SUCCESS:
       return {
         ...state,
-        currentUser: action.payload,
+        currentUser: payload,
       };
     case USER_ACTION_TYPES.SET_DISPLAY_NAME:
       return { ...state, displayName: action.payload };
+    case USER_ACTION_TYPES.USER_SIGNIN_FAILED:
+      return { ...state, error: payload };
     default:
       return state;
   }

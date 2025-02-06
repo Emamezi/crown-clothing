@@ -42,21 +42,22 @@ export const auth = getAuth();
 provider.setCustomParameters({
   prompt: "select_account",
 });
+
 //setting data automatically to the firesotre instead of adding it maunally
 // collections-->document-->data
-export async function addCollectionAndDocuments(collectionKey, objectsToAdd) {
-  const collectionRef = collection(db, collectionKey); // reference to the collection on the firestore db instance
-  const batch = writeBatch(db);
+// export async function addCollectionAndDocuments(collectionKey, objectsToAdd) {
+//   const collectionRef = collection(db, collectionKey); // reference to the collection on the firestore db instance
+//   const batch = writeBatch(db);
 
-  //loop over the object to add and perform a write to the db path specified for each object instance using the title as unique key
-  objectsToAdd.forEach((object) => {
-    const docRef = doc(collectionRef, object.title.toLowerCase());
-    batch.set(docRef, object);
-  });
+//   //loop over the object to add and perform a write to the db path specified for each object instance using the title as unique key
+//   objectsToAdd.forEach((object) => {
+//     const docRef = doc(collectionRef, object.title.toLowerCase());
+//     batch.set(docRef, object);
+//   });
 
-  await batch.commit();
-  console.log("done");
-}
+//   await batch.commit();
+//   console.log("done");
+// }
 
 export async function getCategoriesAndDocument() {
   //creatign a reference to the categories collection in the db
@@ -116,7 +117,7 @@ export async function createUserDocumentFromAuth(userAuth, additionalInfo) {
   }
 
   //if user data exists
-  return userDocRef;
+  return userSnapShot;
   //return docref
 }
 export async function createAuthFromEmailandPassword(email, password) {
@@ -135,4 +136,18 @@ export async function signOutAuthUser() {
 
 export function onAuthStateChangeListner(callback) {
   return onAuthStateChanged(auth, callback);
+}
+
+export function getCurrentUser() {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (userAuth) => {
+        //unsubscribe to avoid mememory leaks
+        unsubscribe();
+        resolve(userAuth);
+      },
+      reject
+    );
+  });
 }
