@@ -16,9 +16,13 @@ export function userReducer(state = INITIAL_USER_STATE, action) {
         ...state,
         currentUser: payload,
       };
-    case USER_ACTION_TYPES.SET_DISPLAY_NAME:
-      return { ...state, displayName: action.payload };
+
+    case USER_ACTION_TYPES.USER_SIGN_OUT_SUCCESS:
+      return { ...state, currentUser: null };
+
     case USER_ACTION_TYPES.USER_SIGNIN_FAILED:
+    case USER_ACTION_TYPES.USER_SIGN_UP_FAILED:
+    case USER_ACTION_TYPES.USER_SIGN_OUT_FAILED:
       return { ...state, error: payload };
     default:
       return state;

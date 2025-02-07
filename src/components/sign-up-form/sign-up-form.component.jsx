@@ -6,6 +6,8 @@ import {
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import { SignUpContainer } from "./sign-up-form.styles";
+import { useDispatch } from "react-redux";
+import { userSignUpStart } from "../../store/user/user.actions";
 
 const defaultFormFields = {
   displayName: "",
@@ -15,6 +17,7 @@ const defaultFormFields = {
 };
 
 function SignUpForm() {
+  const dispatch = useDispatch();
   const [formField, setFormField] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formField;
 
@@ -28,12 +31,13 @@ function SignUpForm() {
     //confirm passwords match
     if (password !== confirmPassword) return;
     try {
+      dispatch(userSignUpStart(email, password, displayName));
       //create auth user from email and password
-      const { user } = await createAuthFromEmailandPassword(email, password);
+      // const { user } = await createAuthFromEmailandPassword(email, password);
       //create userRefDocs on the firestore
-      await createUserDocumentFromAuth(user, {
-        displayName,
-      });
+      // await createUserDocumentFromAuth(user, {
+      //   displayName,
+      // });
 
       resetFormFields();
     } catch (error) {
