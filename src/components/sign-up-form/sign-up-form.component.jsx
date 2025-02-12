@@ -1,8 +1,4 @@
 import { useState } from "react";
-import {
-  createAuthFromEmailandPassword,
-  createUserDocumentFromAuth,
-} from "../../utils/firebase/firebase";
 import FormInput from "../form-input/form-input.component";
 import Button from "../button/button.component";
 import { SignUpContainer } from "./sign-up-form.styles";
@@ -32,12 +28,6 @@ function SignUpForm() {
     if (password !== confirmPassword) return;
     try {
       dispatch(userSignUpStart(email, password, displayName));
-      //create auth user from email and password
-      // const { user } = await createAuthFromEmailandPassword(email, password);
-      //create userRefDocs on the firestore
-      // await createUserDocumentFromAuth(user, {
-      //   displayName,
-      // });
 
       resetFormFields();
     } catch (error) {

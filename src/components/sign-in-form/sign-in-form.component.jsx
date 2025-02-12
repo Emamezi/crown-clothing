@@ -1,8 +1,5 @@
 import { useState } from "react";
-import {
-  signInWithGooglePopUp,
-  signInAuthWithEmailAndPassword,
-} from "../../utils/firebase/firebase";
+
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import { useNavigate } from "react-router-dom";
