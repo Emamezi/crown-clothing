@@ -1,16 +1,9 @@
 import { useEffect } from "react";
-import {
-  onAuthStateChangeListner,
-  createUserDocumentFromAuth,
-  getUserInfo,
-  getCurrentUser,
-} from "./utils/firebase/firebase";
 import Home from "./routes/home/home.component";
 import { useDispatch } from "react-redux";
 import Navigation from "./routes/navigation/navigation.component";
 import { Routes, Route } from "react-router-dom";
 import Authentication from "./routes/authentication/authentication.component";
-// import { setCurrentUser, setDisplayName } from "./store/user/user.actions";
 
 import Shop from "./routes/shop/shop.component";
 import CheckOut from "./routes/checkout/check-out.component";
